@@ -25,13 +25,7 @@ HelpStudents::HelpStudents(int  N, int  M, int K, vector < pair< pair <int,int> 
     numberOfVertices = N;
     target = K;
 
-
-
 }
-
-
-
-
 
 long long int HelpStudents::firstStudent() {
     // IMPLEMENT ME!
@@ -50,7 +44,6 @@ long long int HelpStudents::secondStudent() {
     vector<long long int> dist(numberOfVertices+1, INF);
     vector<long long int> max(numberOfVertices+1,0);
     addRelations(adjlist);
-    cout << "SIZE : " << numberOfVertices + 1 << endl;
     return prim(1,adjlist,dist,visited,max);
 
 }
@@ -63,7 +56,7 @@ long long int HelpStudents::thirdStudent() {
 }
 long long int HelpStudents::fourthStudent() {
     // IMPLEMENT ME!
-    if(target == 1) cout << 1 << endl;
+    if(target == 1) return 1;
     list <pair<long long int,long long int>> adjlist[numberOfVertices+1];
     list <pair<long long int,long long int>> edges[numberOfVertices+1];
     addRelations(adjlist);
@@ -108,7 +101,6 @@ long long int HelpStudents::bfs(long long int root,list <pair<long long int,long
     visited.at(root) = true;
 
     verticeQueue.push(make_pair(0,root));
-    //queue.insert(make_pair(0,root));
     long long int sortway = 0;
 
     while(!verticeQueue.empty()) {
@@ -132,15 +124,13 @@ long long int HelpStudents::bfs(long long int root,list <pair<long long int,long
     }
 }
 long long int HelpStudents::minWays(long long int root,list <pair<long long int,long long int>> adjlist[],list <pair<long long int,long long int>> edges[]){
-    //vertices.insert(make_pair(0,root));
-    // while(!vertices.empty()){
+
     long long int temp = root;
     while(true) {
         long long int min = INF;
         long long int nodeNum = 0;
         bool found = false;
 
-        //pair<long long int,long long int> temp = *(vertices.begin());
         list<pair<long long int, long long int>>::iterator it;
         for (it = adjlist[temp].begin(); it != adjlist[temp].end(); it++) {
             if ((*it).first <= min) {
@@ -166,7 +156,6 @@ long long int HelpStudents::minWays(long long int root,list <pair<long long int,
             return -1;
         }
 
-        //}
         totalWay += min;
 
         if(nodeNum == target){
@@ -203,7 +192,6 @@ long long int HelpStudents::prim(long long int root,list <pair<long long int,lon
             long long int v = (*it).second;
             long long int w = (*it).first;
 
-            //if((*it).second == target) cout << max[(*it).second];
             if(dist.at(v) >  w){
                 if(max.at(temp.second) < w){
                     max.at((*it).second) = w;
@@ -211,15 +199,13 @@ long long int HelpStudents::prim(long long int root,list <pair<long long int,lon
                     max.at((*it).second) = max[temp.second];
                 }
                 if(dist.at(v) != INF)
-                    //vertices.erase(vertices.find(make_pair(dist.at(v),v)));
+
                     vertices.erase(vertices.find(make_pair(dist.at(v),v)));
                 dist.at(v)= w;
                 vertices.insert(make_pair(dist.at(v),v));
             }
         }
     }
-
-
 
     return max[target];
 }
@@ -231,13 +217,7 @@ void HelpStudents::addRelations(list <pair<long long int,long long int>> adjlist
         if(path[i].first.first == path[i].first.second) continue;
         adjlist[path[i].first.first].push_back(make_pair(path[i].second,path[i].first.second));
         adjlist[path[i].first.second].push_back(make_pair(path[i].second,path[i].first.first));
-        //cout <<"path[i].first.first : " <<path[i].first.first << endl;
-        //cout << " path[i].first.first : " << path[i].first.first << " - path[i].first.second : " << path[i].first.second << endl;
 
     }
-    cout << "NUMBER OF VERTICES : " << numberOfVertices << endl;
-
-
-
 
 }
