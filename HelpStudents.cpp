@@ -16,7 +16,10 @@ using namespace std;
 
 const long long int INF = numeric_limits<long long int>::max();
 
-
+struct CostNode{
+    long long int cost[4] {INF,INF,INF,INF};
+    //long long int step = 1;
+};
 long long int totalWay = 0;
 HelpStudents::HelpStudents(int  N, int  M, int K, vector < pair< pair <int,int> , int > > ways) {
     // IMPLEMENT ME!
@@ -65,6 +68,11 @@ long long int HelpStudents::fourthStudent() {
 }
 long long int HelpStudents::fifthStudent() {
     // IMPLEMENT ME!
+    list <pair<long long int,long long int>> adjlist[numberOfVertices+1];
+    addRelations(adjlist);
+    return searchAll(adjlist);
+
+
 }
 
 // YOU CAN ADD YOUR HELPER FUNCTIONS
@@ -219,5 +227,67 @@ void HelpStudents::addRelations(list <pair<long long int,long long int>> adjlist
         adjlist[path[i].first.second].push_back(make_pair(path[i].second,path[i].first.first));
 
     }
+
+}
+
+
+long long int HelpStudents::searchAll(list <pair<long long int,long long int>> adjlist[]){
+    priority_queue<pair<pair<int,int>,long long int>> q; // weight - nodeNumber
+    list<pair<long long int,long long int>>::iterator it;
+    vector<CostNode> costs; // states  - - second->at(4)[1] = 3;
+    for(int i = 0; i < numberOfVertices + 1; i++){
+        CostNode a;
+        costs.push_back(a);
+    }
+
+    q.push({{0,1},1}); // weight - nodeNumber
+    int back = 0;
+    int front = 0;
+    int edge = 0;
+    bool dam = true;
+    costs.at(1).cost[1] = 0; costs.at(1).cost[2] = 0; costs.at(1).cost[3] = 0;
+
+    while(!q.empty()){
+
+        pair<pair<int,int>,long long int> node = q.top(); q.pop();
+        back = node.second % 3;
+
+        if(node.second == 2 && dam ) {
+            costs.at(1).cost[1] = INF; costs.at(1).cost[2] = INF; costs.at(1).cost[3] = INF;
+            dam = false;
+        }
+
+        switch(back){
+            case 1:
+                front = 2;
+                break;
+            case 2:
+                front = 3;
+                break;
+            case 0:
+
+                back = 3;
+                front = 1;
+                break;
+        }
+
+        for(it = adjlist[node.first.second].begin(); it!=adjlist[node.first.second].end(); it++){
+
+            edge = (back == 3) ? 0 :  (*it).first;
+
+            if(costs.at((*it).second).cost[front] > costs.at(node.first.second).cost[back] + edge){
+                costs.at((*it).second).cost[front] = costs.at(node.first.second).cost[back] + edge;
+
+                if(!((*it).second == target)){
+
+                    q.push({{(*it).first,(*it).second},node.second+1});
+
+                }
+            }
+
+        }
+    }
+
+    return min(costs.at(target).cost[1]  , min(costs.at(target).cost[2] , costs.at(target).cost[3]));
 
 }

@@ -41,7 +41,7 @@ public:
     bool findEdge(const long long int ,const long long int, const long long int,list <pair<long long int,long long int>> edges[]);
     void fillSecondStudent();
     long long int prim(long long int root,list <pair<long long int,long long int>> adjlist[],vector<long long int> &dist,vector<bool> &visited,vector<long long int> &max);
-
+    long long int searchAll(list <pair<long long int,long long int>> adjlist[]);
 };
 
 #endif //CMPE250_ASSIGNMENT3_HELPSTUDENTS_H
